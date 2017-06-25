@@ -1,0 +1,21 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Use the title from a page's frontmatter if it has one -->
+    <title><%= current_page.data.title || "Middleman" %></title>
+    <%= stylesheet_link_tag "application" %>
+
+    <script src="https://use.typekit.net/bhs8rbg.js"></script>
+    <script>try{Typekit.load({ async: false });}catch(e){}</script>
+  </head>
+  <body class="<%= page_classes %>">
+
+    <%= yield %>
+
+    <%= javascript_include_tag "site" %>
+  </body>
+</html>

@@ -1,0 +1,18 @@
+{
+  "name": "undersight.co",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "browser-sync": "~2.11.0",
+    "foundation-sites": "^6.3.1",
+    "fs": "0.0.2",
+    "gulp": "~3.9.0",
+    "gulp-s3": "^0.3.0",
+    "gulp-util": "~3.0.5",
+    "jquery": "^3.2.1",
+    "normalize-scss": "^7.0.0",
+    "pixi.js": "^4.5.3",
+    "rsyncwrapper": "~0.4.3"
+  }
+}

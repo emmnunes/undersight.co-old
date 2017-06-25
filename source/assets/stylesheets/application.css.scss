@@ -1,0 +1,10 @@
+$global-width: 1400px;
+
+// Vendor
+@import "normalize-scss/sass/_normalize";
+@import "foundation-sites/scss/foundation";
+
+// Design System
+@import "design-system/scss/design-system";
+
+@import "views/__views";

@@ -1,0 +1,84 @@
+---
+title: Welcome to Middleman
+---
+
+<header class="index__header">
+  <div class="index__header__wrapper">
+    <small>Design, Code & Noise</small>
+    <h1><strong>Undersight.co</strong> is the digital playground of Eduardo Nunes.</h1>
+    <p>Full-time graphic designer, part-time noise maker and ocasional human. Head of Design at Stockholm-based Kollegorna.</p>
+  </div>
+</header>
+
+<section class="index__projects">
+  <div class="row">
+    <div class="column" style="padding-top: 200px;">
+
+      <article class="project project--4everypet">
+        <%= image_tag('bunny.png', :class => "project__thumbnail", :data => {
+          background: "ACECF5",
+          foreground: "F4DC75",
+          orientation: "se",
+          type: "circle",
+          map: "3"
+        }) %>
+
+        <div class="project__label">
+          <h2>4EveryPet</h2>
+          <p>Branding for pet sitting Web service.</p>
+        </div>
+      </article>
+    </div>
+
+    <div class="column">
+      <article class="project project--citizens">
+        <%= image_tag('citizens.jpg', :class => "project__thumbnail", :data => {
+          background: "1c2b3a",
+          foreground: "b6e7f9",
+          orientation: "s",
+          type: "rectangle",
+          map: "5"
+        }) %>
+
+        <div class="project__label">
+          <h2>Citizens for Europe</h2>
+          <p>Branding and website for European NGO.</p>
+        </div>
+      </article>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="column">
+      <article class="project">
+        <%= image_tag('matcher.jpg', :class => "project__thumbnail", :data => {
+          background: "003AC5",
+          foreground: "58E8AB",
+          orientation: "s",
+          type: "rectangle",
+          map: "2"
+        }) %>
+      </article>
+    </div>
+
+    <div class="column" style="padding-top: 300px;">
+      <article class="project">
+        <%= image_tag('echo1.jpg', :class => "project__thumbnail", :data => {
+          background: "fed766",
+          foreground: "ff0022",
+          orientation: "se",
+          type: "circle",
+          map: "6"
+        }) %>
+      </article>
+    </div>
+  </div>
+
+</div>
+
+<%= image_tag('maps/1.jpg', :id => "map-1", :class => "displacer") %>
+<%= image_tag('maps/2.jpg', :id => "map-2", :class => "displacer") %>
+<%= image_tag('maps/3.jpg', :id => "map-3", :class => "displacer") %>
+<%= image_tag('maps/4.jpg', :id => "map-4", :class => "displacer") %>
+<%= image_tag('maps/5.jpg', :id => "map-5", :class => "displacer") %>
+<%= image_tag('maps/6.jpg', :id => "map-6", :class => "displacer") %>
