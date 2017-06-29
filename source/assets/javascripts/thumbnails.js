@@ -99,7 +99,7 @@ var setupThumbnails = {
       const displacementTexture = PIXI.Sprite.fromImage(map);
 
       const displacementFilter = new PIXI.filters.DisplacementFilter(displacementTexture);
-      const noiseFilter = new PIXI.filters.NoiseFilter(0.1, Math.random());
+      const noiseFilter = new PIXI.filters.NoiseFilter(0.05, Math.random());
       displacementFilter.scale.x = 0;
       displacementFilter.scale.y = 0;
       base.filters = [noiseFilter, displacementFilter];
@@ -111,9 +111,9 @@ var setupThumbnails = {
       app.push(canvas);
 
       canvas.ticker.add(function(delta) {
-        noiseFilter.seed = Math.random();
-
         if (hover) {
+          noiseFilter.seed = Math.random();
+
           if (orientation == "w") {
             if(displacementFilter.scale.x < offset*maximum) {
               displacementFilter.scale.x += offset;
@@ -136,7 +136,6 @@ var setupThumbnails = {
             }
           }
         } else {
-
           if (orientation == "w") {
             if (displacementFilter.scale.x > 0) {
               displacementFilter.scale.x -= offset;

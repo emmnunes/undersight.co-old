@@ -5,12 +5,12 @@
  * Only fires on body classes that match. If a body class contains a dash,
  * replace the dash with an underscore when adding it to the object below.
  *
- * .noConflict()
- * The routing is enclosed within an anonymous function so that you can
- * always reference jQuery with $, even when in .noConflict() mode.
+ * Modified by Eduardo Nunes to use vanilla JS, instead of jQuery
+ * http://www.undersight.co
  * ======================================================================== */
-  //= require sizzle/dist/sizzle.js
+ //= require sizzle/dist/sizzle.js
  //= require pixi.js/dist/pixi.js
+ //= require scrollmagic/scrollmagic/minified/ScrollMagic.min.js
  //= require helpers.js
  //= require thumbnails.js
 
@@ -35,9 +35,29 @@ const UNDERSIGHT = {
           let href = el.getAttribute('href');
           setTimeout(function() {
             window.location = href;
-          }, 1000);
+          }, 400);
         }
       });
+
+      setTimeout(function() {
+        var controller = new ScrollMagic.Controller();
+        const scrollables = Sizzle('.scrolling');
+
+        scrollables.forEach(function(el) {
+
+          new ScrollMagic.Scene({
+              triggerElement: el,
+              triggerHook: 0.9
+            })
+            .setClassToggle(el, 'visible')
+          	.addTo(controller); // assign the scene to the controller
+        });
+      }, 600);
+
+      return !!window.WebGLRenderingContext &&
+        !!document.createElement('canvas').getContext(
+            'experimental-webgl',
+            {antialias: false});
     }
   },
 
@@ -47,6 +67,17 @@ const UNDERSIGHT = {
 
     },
     finalize: function() {
+      window.onscroll = function() {
+        let scrollPos = document.body.scrollTop;
+        let opacity = scrollPos.map(0, 300, 1.000, 0.015);
+        let transformY = scrollPos.map(0, 300, 0, 50);
+        let rotateX = scrollPos.map(0, 300, 0, 2);
+        let header = Sizzle('.index__header')[0];
+
+        header.style.opacity = opacity;
+        header.style.transform = "translateX(-50%) translateY(-" + transformY + "px) skewX(-" + rotateX + "deg)";
+      };
+
       const elements = Sizzle('.project__thumbnail');
       elements.forEach(function(el) {
         setupThumbnails.circle.init(
@@ -74,6 +105,7 @@ const UNDERSIGHT = {
     finalize: function() {
       const loader = Sizzle('.loader')[0];
       const projectContent = Sizzle('.project__wrapper')[0];
+      const projectImages = Sizzle('.project__images')[0];
 
       setTimeout(function() {
         loader.className += " loading";
@@ -81,7 +113,10 @@ const UNDERSIGHT = {
       setTimeout(function() {
         projectContent.className += " visible";
         loader.className += " loaded";
-      }, 1100);
+      }, 1000);
+      setTimeout(function() {
+        projectImages.className += " visible";
+      }, 1300);
     }
   }
 };

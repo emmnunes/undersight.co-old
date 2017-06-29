@@ -1,0 +1,48 @@
+---
+title: Citizens for Europe
+slug: 4everypet
+description: 4EveryPet is a pet-sitting and pet-caring business run by a couple of friends of mine. They were in need of a brand to help kickstart their business, so I gave them a hand. It’s an hopefully recognisable dog, made out of two 4’s.
+---
+
+<div class="loader" aria-hidden="true" style="background-color: #fed766; color: #EC3332; fill: #EC3332;">
+  <div class="project__header">
+    <div class="project__header__wrapper">
+      <h1><strong>Undersight</strong>.co</h1>
+    </div>
+  </div>
+
+  <div class="project__data">
+    <div class="project__data__title">
+      <h2><%= current_page.data.title %></h2>
+      <svg viewBox="0 0 140 100">
+        <use xlink:href="<%= image_path("projects/#{current_page.data.slug}/logo.svg") %>#logo"></use>
+      </svg>
+    </div>
+    <div class="project__data__description">
+      <p><%= current_page.data.description %></p>
+    </div>
+  </div>
+</div>
+
+
+<div class="project__wrapper">
+
+  <header class="project__header">
+    <div class="project__header__wrapper">
+      <% link_to '/' do %><h1><strong>Undersight</strong>.co</h1><% end %>
+    </div>
+  </header>
+
+  <section class="project__data">
+    <div class="project__data__title">
+      <h2><%= current_page.data.title %></h2>
+      <svg viewBox="0 0 140 100">
+        <use xlink:href="<%= image_path("projects/#{current_page.data.slug}/logo.svg") %>#logo"></use>
+      </svg>
+    </div>
+    <div class="project__data__description">
+      <p><%= current_page.data.description %></p>
+    </div>
+  </section>
+
+</div>

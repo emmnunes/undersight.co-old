@@ -9,6 +9,7 @@
     color: inherit;
     pointer-events: none;
     transition: all 0.4s cubic-bezier(0.190, 1.000, 0.220, 1.000);
+    z-index: 9;
 
     &:after {
       content: "";
@@ -19,20 +20,13 @@
       top: 0;
       width: 100%;
       height: 100%;
-      transition: all 1s cubic-bezier(0.190, 1.000, 0.220, 1.000);
+      transition: all 1s cubic-bezier(0.950, 0.050, 0.795, 0.035);
     }
-
-    .project__header,
-    .project__data {
-      opacity: 0;
-      transform: translateY(-20px) rotateX(30deg);
-      transition: opacity 0.4s cubic-bezier(0.190, 1.000, 0.220, 1.000), transform 0.6s cubic-bezier(0.190, 1.000, 0.220, 1.000);
-    }
-    .project__header { transition-delay: 0.1s; }
-    .project__data { transition-delay: 0.4s; }
 
     &.loading {
-      &:after { transform: translateY(100%); }
+      &:after {
+        opacity: 0;
+      }
 
       .project__header,
       .project__data {
@@ -42,8 +36,8 @@
     }
 
     &.loaded {
-      height: 0;
-      transition: all 1.6s cubic-bezier(0.190, 1.000, 0.220, 1.000);
+      opacity: 0;
+      transition: all 1.2s cubic-bezier(0.190, 1.000, 0.220, 1.000);
     }
 
     &.out {
@@ -76,6 +70,7 @@
   &__header {
     @extend %wrapper;
     padding: 100px 0 150px 0;
+    transform-origin: left center;
 
     h1 {
       margin: 0;
@@ -114,7 +109,7 @@
     }
 
     p {
-      font-size: ds-rem-calc(20);
+      font-size: ds-rem-calc(20px);
       line-height: ds-rem-calc(30);
       color: $ds-color-black;
     }
@@ -131,6 +126,35 @@
     &__description {
       @include grid-col(5);
       @include grid-col-end();
+    }
+  }
+
+  &__images {
+    @extend %wrapper;
+    position: relative;
+    margin-top: 160px;
+    opacity: 0;
+    transform: translateY(40px);
+    transition: all 0.8s cubic-bezier(1.000, 0.000, 0.000, 1.000);
+
+    img {
+      margin-bottom: 20px;
+    }
+
+    &.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .scrolling {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.8s cubic-bezier(1.000, 0.000, 0.000, 1.000);
+
+      &.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
   }
 }

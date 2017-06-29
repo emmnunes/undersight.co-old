@@ -20,7 +20,7 @@ title: Welcome to Middleman
       <div class="column" style="padding-top: 200px;">
 
         <% link_to '/project/4everypet.html' do %>
-          <article class="project project--4everypet">
+          <article class="project project--4everypet scrolling">
             <%= image_tag('bunny.png', :class => "project__thumbnail", :data => {
               background: "ACECF5",
               foreground: "F4DC75",
@@ -39,7 +39,7 @@ title: Welcome to Middleman
 
       <div class="column">
         <% link_to '/project/citizens-for-europe.html' do %>
-          <article class="project project--citizens">
+          <article class="project project--citizens scrolling">
             <%= image_tag('citizens.jpg', :class => "project__thumbnail", :data => {
               background: "1c2b3a",
               foreground: "b6e7f9",
@@ -59,7 +59,7 @@ title: Welcome to Middleman
 
     <div class="row">
       <div class="column" style="padding-top: 40px;">
-        <article class="project">
+        <article class="project scrolling">
           <%= image_tag('matcher.jpg', :class => "project__thumbnail", :data => {
             background: "003AC5",
             foreground: "58E8AB",
@@ -71,22 +71,24 @@ title: Welcome to Middleman
       </div>
 
       <div class="column" style="padding-top: 300px;">
-        <article class="project">
-          <%= image_tag('echo1.jpg', :class => "project__thumbnail", :data => {
-            background: "fed766",
-            foreground: "009fb7",
-            orientation: "sw",
-            type: "circle",
-            map: "3"
-          }) %>
-        </article>
+        <% link_to '/project/echo1.html' do %>
+          <article class="project scrolling">
+            <%= image_tag('echo1.jpg', :class => "project__thumbnail", :data => {
+              background: "fed766",
+              foreground: "009fb7",
+              orientation: "sw",
+              type: "circle",
+              map: "3"
+            }) %>
+          </article>
+        <% end %>
       </div>
     </div>
 
     <div class="row">
       <div class="column" style="padding-top: 200px;">
 
-        <article class="project project--4everypet">
+        <article class="project project--4everypet scrolling">
           <%= image_tag('bunny.png', :class => "project__thumbnail", :data => {
             background: "ACECF5",
             foreground: "F4DC75",
@@ -103,7 +105,7 @@ title: Welcome to Middleman
       </div>
 
       <div class="column">
-        <article class="project project--citizens">
+        <article class="project project--citizens scrolling">
           <%= image_tag('citizens.jpg', :class => "project__thumbnail", :data => {
             background: "1c2b3a",
             foreground: "b6e7f9",
