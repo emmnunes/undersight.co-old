@@ -1,0 +1,57 @@
+---
+title: 4EveryPet
+slug: 4everypet
+description: 4EveryPet is a pet-sitting and pet-caring business run by a couple of friends of mine. They were in need of a brand to help kickstart their business, so I gave them a hand. It’s an hopefully recognisable dog, made out of two 4’s.
+---
+
+<div class="loader" aria-hidden="true" style="background-color: #ACECF5; color: #340068; fill: #340068;">
+  <div class="loader__inner">
+    <div class="project__header">
+      <div class="project__header__wrapper">
+        <h1><strong>Undersight</strong>.co</h1>
+      </div>
+    </div>
+
+    <div class="project__data">
+      <div class="project__data__title">
+        <h2><%= current_page.data.title %></h2>
+        <svg viewBox="0 0 140 100">
+          <use xlink:href="<%= image_path("projects/#{current_page.data.slug}/logo.svg") %>#logo"></use>
+        </svg>
+      </div>
+      <div class="project__data__description">
+        <p><%= current_page.data.description %></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="project__wrapper">
+
+  <header class="project__header">
+    <div class="project__header__wrapper">
+      <% link_to '/' do %><h1><strong>Undersight</strong>.co</h1><% end %>
+    </div>
+  </header>
+
+  <section class="project__data">
+    <div class="project__data__title">
+      <h2><%= current_page.data.title %></h2>
+      <svg viewBox="0 0 140 100">
+        <use xlink:href="<%= image_path("projects/#{current_page.data.slug}/logo.svg") %>#logo"></use>
+      </svg>
+    </div>
+    <div class="project__data__description">
+      <p><%= current_page.data.description %></p>
+    </div>
+  </section>
+
+</div>
+
+<%= image_tag('maps/1.jpg', :id => "map-1", :class => "displacer") %>
+<%= image_tag('maps/2.jpg', :id => "map-2", :class => "displacer") %>
+<%= image_tag('maps/3.jpg', :id => "map-3", :class => "displacer") %>
+<%= image_tag('maps/4.jpg', :id => "map-4", :class => "displacer") %>
+<%= image_tag('maps/5.jpg', :id => "map-5", :class => "displacer") %>
+<%= image_tag('maps/6.jpg', :id => "map-6", :class => "displacer") %>

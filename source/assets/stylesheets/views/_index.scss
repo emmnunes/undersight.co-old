@@ -1,4 +1,31 @@
 .index {
+  .loader {
+    position: fixed;
+    z-index: 9999;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    color: inherit;
+    pointer-events: none;
+    background: $ds-color-midnight;
+
+    &.out {
+      height: 100%;
+      top: 0;
+      bottom: auto;
+      transition: all 0.4s cubic-bezier(0.190, 1.000, 0.220, 1.000);
+    }
+
+    &.loaded {
+      height: 0;
+      transition: all 0.4s cubic-bezier(0.390, 0.575, 0.565, 1.000);
+    }
+
+    h1, h2, p { color: inherit; }
+  }
+
   &__header {
     @extend %wrapper;
     padding: 100px 0;
@@ -55,7 +82,11 @@
       @extend %wrapper;
 
       .column {
-        @include grid-col(6, 0);
+        @include grid-col(12);
+
+        @media #{$medium-up} {
+          @include grid-col(6);
+        }
       }
 
       .wide {
@@ -66,6 +97,7 @@
     .project {
       width: 100%;
       position: relative;
+      margin-bottom: 30px;
       // overflow: hidden;
 
       &__thumbnail {
@@ -80,6 +112,7 @@
         opacity: 0;
         z-index: 1;
         transition: all 0.2s ease-in;
+        width: ds-rem-calc(480px);
 
         h2 {
           font-family: $ds-font-family-mono;
@@ -92,7 +125,6 @@
           font-size: ds-rem-calc(24px);
           line-height: ds-rem-calc(32px);
           margin: 0;
-          max-width: ds-rem-calc(480px);
         }
 
       }
@@ -101,7 +133,6 @@
         .project__label {
           left: calc(100% + 80px);
           bottom: 100px;
-          width: 500px;
           max-width: 40vw;
           transform: translateX(-20px);
         }
@@ -109,9 +140,9 @@
 
       &--citizens {
         .project__label {
+          text-align: right;
           right: calc(100% + 80px);
           top: 0;
-          width: 500px;
           max-width: 50vw;
           transform: translateX(20px);
         }
@@ -125,7 +156,7 @@
         top: 0;
         left: 0;
         transition: all 0.3s cubic-bezier(0.860, 0.000, 0.070, 1.000);
-        // filter: grayscale(1);
+        filter: grayscale(1);
       }
 
       &:hover {
@@ -133,8 +164,6 @@
         canvas {
           z-index: 9;
           filter: grayscale(0);
-          transform-origin: 50% 50%;
-          // transform: skewX(-2deg);
         }
 
         .project__label {

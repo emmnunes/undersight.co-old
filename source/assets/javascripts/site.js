@@ -9,75 +9,113 @@
  * The routing is enclosed within an anonymous function so that you can
  * always reference jQuery with $, even when in .noConflict() mode.
  * ======================================================================== */
- //= require jquery/dist/jquery.js
+  //= require sizzle/dist/sizzle.js
  //= require pixi.js/dist/pixi.js
+ //= require helpers.js
  //= require thumbnails.js
 
-(function($) {
+// Use this variable to set up the common and page specific functions. If you
+// rename this variable, you will also need to rename the namespace below.
+const UNDERSIGHT = {
+  // All pages
+  'common': {
+    init: function() {
 
-  // Use this variable to set up the common and page specific functions. If you
-  // rename this variable, you will also need to rename the namespace below.
-  var Undersight = {
-    // All pages
-    'common': {
-      init: function() {
-
-      },
-      finalize: function() {
-      }
     },
-    // Home page
-    'index': {
-      init: function() {
+    finalize: function() {
+      const links = Sizzle('a');
 
-      },
-      finalize: function() {
-        const elements = $('.project__thumbnail');
-        elements.each(function(el) {
-          setupThumbnails.circle.init(
-            $(this),
-            $(this).attr('data-type'),
-            $(this).attr('data-background'),
-            $(this).attr('data-foreground'),
-            $(this).attr('data-orientation'),
-            $(this).attr('data-map')
-          );
-        });
-      }
+      links.forEach(function(el) {
+
+        el.onclick = function(e) {
+          e.preventDefault();
+          const loader = Sizzle('.loader')[0];
+          loader.className = "loader out";
+
+          let href = el.getAttribute('href');
+          setTimeout(function() {
+            window.location = href;
+          }, 1000);
+        }
+      });
     }
-  };
+  },
 
-  // The routing fires all common scripts, followed by the page specific scripts.
-  // Add additional events for more control over timing e.g. a finalize event
-  var UTIL = {
-    fire: function(func, funcname, args) {
-      var fire;
-      var namespace = Undersight;
-      funcname = (funcname === undefined) ? 'init' : funcname;
-      fire = func !== '';
-      fire = fire && namespace[func];
-      fire = fire && typeof namespace[func][funcname] === 'function';
+  // Home page
+  'index': {
+    init: function() {
 
-      if (fire) {
-        namespace[func][funcname](args);
-      }
     },
-    loadEvents: function() {
-      // Fire common init JS
-      UTIL.fire('common');
-
-      // Fire page-specific init JS, and then finalize JS
-      $.each(document.body.className.replace(/-/g, '_').split(/\s+/), function(i, classnm) {
-        UTIL.fire(classnm);
-        UTIL.fire(classnm, 'finalize');
+    finalize: function() {
+      const elements = Sizzle('.project__thumbnail');
+      elements.forEach(function(el) {
+        setupThumbnails.circle.init(
+          el,
+          el.getAttribute('data-type'),
+          el.getAttribute('data-background'),
+          el.getAttribute('data-foreground'),
+          el.getAttribute('data-orientation'),
+          el.getAttribute('data-map')
+        );
       });
 
-      // Fire common finalize JS
-      UTIL.fire('common', 'finalize');
+      const loader = Sizzle('.loader')[0];
+
+      setTimeout(function() {
+        loader.className += " loaded";
+      }, 100);
     }
-  };
+  },
 
-  // Load Events
-  $(document).ready(UTIL.loadEvents);
+  // Project single page
+  'project': {
+    init: function() {
+    },
+    finalize: function() {
+      const loader = Sizzle('.loader')[0];
+      const projectContent = Sizzle('.project__wrapper')[0];
 
-})(jQuery); // Fully reference jQuery after this point.
+      setTimeout(function() {
+        loader.className += " loading";
+      }, 100);
+      setTimeout(function() {
+        projectContent.className += " visible";
+        loader.className += " loaded";
+      }, 1100);
+    }
+  }
+};
+
+// The routing fires all common scripts, followed by the page specific scripts.
+// Add additional events for more control over timing e.g. a finalize event
+const UTIL = {
+  fire: function(func, funcname, args) {
+    var fire;
+    var namespace = UNDERSIGHT;
+    funcname = (funcname === undefined) ? 'init' : funcname;
+    fire = func !== '';
+    fire = fire && namespace[func];
+    fire = fire && typeof namespace[func][funcname] === 'function';
+
+    if (fire) {
+      namespace[func][funcname](args);
+    }
+  },
+  loadEvents: function() {
+    // Fire common init JS
+    UTIL.fire('common');
+
+    // Fire page-specific init JS, and then finalize JS
+    let bodyClasses = document.body.className.replace(/-/g, '_').split(/\s+/);
+    bodyClasses.forEach(function(classnm) {
+      UTIL.fire(classnm);
+      UTIL.fire(classnm, 'finalize');
+    });
+
+    // Fire common finalize JS
+    UTIL.fire('common', 'finalize');
+  }
+};
+
+// Load Events
+docReady(UTIL.loadEvents);

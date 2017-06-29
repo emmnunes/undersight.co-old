@@ -4,13 +4,13 @@ var setupThumbnails = {
   'circle': {
     init: function(image, type, background, foreground, orientation, mapno) {
 
-      const imageWidth = image.width();
-      const imageHeight = image.height();
+      const imageWidth = image.offsetWidth;
+      const imageHeight = image.offsetHeight;
       const options = {
         "width": imageWidth,
         "height": imageHeight,
         "backgroundColor": "0x" + background,
-        "antialias": true
+        "antialias": false
       }
       const canvas = new PIXI.Application(options);
 
@@ -18,16 +18,16 @@ var setupThumbnails = {
       let playing = false;
       let offset = 20;
       let acceleration = 0;
-      let maximum = 6 + Math.round(Math.random() * 2);
+      let maximum = 4 + Math.round(Math.random() * 2);
 
       // The application will create a canvas element for you that you
       // can then insert into the DOM.
-      image.closest('.project')[0].appendChild(canvas.view);
+      findAncestor(image, 'project').appendChild(canvas.view);
 
       const base = new PIXI.Container();
       canvas.stage.addChild(base);
 
-      const staticImage = image.attr("src");
+      const staticImage = image.getAttribute("src");
 
       // This creates a texture from a 'bunny.png' image.
       const prjImageBg = new PIXI.Sprite.fromImage(staticImage);
@@ -63,41 +63,39 @@ var setupThumbnails = {
       prjImageBg.anchor.x = 0.5;
       prjImageBg.anchor.y = 0.5;
 
+      const geometry = new PIXI.Graphics();
+
       if(type === "circle") {
-        const circle = new PIXI.Graphics();
-        circle.beginFill("0x" + foreground);
-        circle.arc(0, 0, 1, 0, Math.PI * 2);
-        circle.position = {x: prjImage.x, y: prjImage.y};
+        geometry.beginFill("0x" + foreground);
+        geometry.arc(0, 0, 1, 0, Math.PI * 2);
+        geometry.position = {x: prjImage.x, y: prjImage.y};
         const radius = canvas.renderer.width > canvas.renderer.height ? canvas.renderer.height : canvas.renderer.width;
-        circle.width = radius / 1.2;
-        circle.height = radius / 1.2;
-        base.addChild(circle);
+        geometry.width = radius / 1.2;
+        geometry.height = radius / 1.2;
       }
 
       if(type === "square") {
-        const square = new PIXI.Graphics();
-        square.beginFill("0x" + foreground);
+        geometry.beginFill("0x" + foreground);
         const imgAnchor = {x: prjImage.x, y: prjImage.y};
         const squareWidth = canvas.renderer.width > canvas.renderer.height ? canvas.renderer.height : canvas.renderer.width;
         const startX = imgAnchor.x - squareWidth / 3;
         const startY = imgAnchor.y - squareWidth / 3;
-        square.drawRect(startX, startY, squareWidth / 1.5, squareWidth / 1.5);
-        // square.rotation = 45 * Math.PI / 180;
-        base.addChild(square);
+        geometry.drawRect(startX, startY, squareWidth / 1.5, squareWidth / 1.5);
+        // geometry.rotation = 45 * Math.PI / 180;
       }
 
       if(type === "rectangle") {
-        const square = new PIXI.Graphics();
-        square.beginFill("0x" + foreground);
+        geometry.beginFill("0x" + foreground);
         const imgAnchor = {x: prjImage.x, y: prjImage.y};
         const startX = imgAnchor.x - canvas.renderer.width / 3;
         const startY = imgAnchor.y - canvas.renderer.height / 3;
-        square.drawRect(startX, startY, canvas.renderer.width / 1.5, canvas.renderer.height / 1.5);
-        // square.rotation = 45 * Math.PI / 180;
-        base.addChild(square);
+        geometry.drawRect(startX, startY, canvas.renderer.width / 1.5, canvas.renderer.height / 1.5);
+        // geometry.rotation = 45 * Math.PI / 180;
       }
 
-      const map = $('#map-'+mapno).attr('src');
+      base.addChild(geometry);
+
+      const map = Sizzle('#map-'+mapno)[0].getAttribute("src");
       const displacementTexture = PIXI.Sprite.fromImage(map);
 
       const displacementFilter = new PIXI.filters.DisplacementFilter(displacementTexture);
@@ -130,14 +128,13 @@ var setupThumbnails = {
               displacementFilter.scale.x += offset;
               displacementFilter.scale.y -= offset;
             }
-          } else {
+          } else if (orientation == "sw") {
             if(displacementFilter.scale.x > offset*maximum
               || displacementFilter.scale.y < offset*maximum) {
               displacementFilter.scale.x -= offset;
               displacementFilter.scale.y += offset;
             }
           }
-
         } else {
 
           if (orientation == "w") {
@@ -153,7 +150,7 @@ var setupThumbnails = {
               displacementFilter.scale.x -= offset;
               displacementFilter.scale.y += offset;
             }
-          } else {
+          } else if (orientation == "sw") {
             if (displacementFilter.scale.x < 0) {
               displacementFilter.scale.x += offset;
               displacementFilter.scale.y -= offset;

@@ -13,6 +13,7 @@
     "jquery": "^3.2.1",
     "normalize-scss": "^7.0.0",
     "pixi.js": "^4.5.3",
-    "rsyncwrapper": "~0.4.3"
+    "rsyncwrapper": "~0.4.3",
+    "sizzle": "^2.3.3"
   }
 }
