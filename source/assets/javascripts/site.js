@@ -113,10 +113,10 @@ const UNDERSIGHT = {
       setTimeout(function() {
         projectContent.className += " visible";
         loader.className += " loaded";
-      }, 1000);
+      }, 2500);
       setTimeout(function() {
         projectImages.className += " visible";
-      }, 1300);
+      }, 3000);
     }
   }
 };
