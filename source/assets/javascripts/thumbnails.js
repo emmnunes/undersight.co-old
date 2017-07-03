@@ -25,16 +25,19 @@ var setupThumbnails = {
       findAncestor(image, 'project').appendChild(canvas.view);
 
       const base = new PIXI.Container();
+      base.setTransform(imageWidth/2, imageHeight/2, 1, 1, 0, 0, 0, imageWidth/2, imageHeight/2);
+
+      const imageContainer = new PIXI.Container();
+      imageContainer.setTransform(imageWidth/2, imageHeight/2, 1, 1, 0, 0, 0, imageWidth/2, imageHeight/2);
+
       canvas.stage.addChild(base);
+      canvas.stage.addChild(imageContainer);
 
       const staticImage = image.getAttribute("src");
 
       // This creates a texture from a 'bunny.png' image.
-      const prjImageBg = new PIXI.Sprite.fromImage(staticImage);
       const prjImage = new PIXI.Sprite.fromImage(staticImage);
-      prjImageBg.blendMode = PIXI.BLEND_MODES.MULTIPLY;
       prjImage.blendMode = PIXI.BLEND_MODES.MULTIPLY;
-      prjImage.alpha = 0;
 
       prjImage.interactive = true;
       prjImage.buttonMode = true;
@@ -50,18 +53,9 @@ var setupThumbnails = {
       prjImage.x = canvas.renderer.width / 2;
       prjImage.y = canvas.renderer.height / 2;
 
-      prjImageBg.width = canvas.renderer.width;
-      prjImageBg.height = canvas.renderer.height;
-
-      prjImageBg.x = canvas.renderer.width / 2;
-      prjImageBg.y = canvas.renderer.height / 2;
-
       // Rotate around the center
       prjImage.anchor.x = 0.5;
       prjImage.anchor.y = 0.5;
-
-      prjImageBg.anchor.x = 0.5;
-      prjImageBg.anchor.y = 0.5;
 
       const geometry = new PIXI.Graphics();
 
@@ -95,64 +89,28 @@ var setupThumbnails = {
 
       base.addChild(geometry);
 
-      const map = Sizzle('#map-'+mapno)[0].getAttribute("src");
-      const displacementTexture = PIXI.Sprite.fromImage(map);
-
-      const displacementFilter = new PIXI.filters.DisplacementFilter(displacementTexture);
-      const noiseFilter = new PIXI.filters.NoiseFilter(0.05, Math.random());
-      displacementFilter.scale.x = 0;
-      displacementFilter.scale.y = 0;
-      base.filters = [noiseFilter, displacementFilter];
+      const noiseFilter = new PIXI.filters.NoiseFilter(0.09, Math.random());
+      base.filters = [noiseFilter];
 
       base.addChild(prjImage);
 
-      canvas.stage.addChild(prjImageBg);
+      imageContainer.addChild(prjImage);
 
       app.push(canvas);
 
       canvas.ticker.add(function(delta) {
-        if (hover) {
+        if(delta > 0) {
           noiseFilter.seed = Math.random();
 
-          if (orientation == "w") {
-            if(displacementFilter.scale.x < offset*maximum) {
-              displacementFilter.scale.x += offset;
+          if (hover) {
+            if(imageContainer.scale.x < 1.05) {
+              imageContainer.scale.x += 0.005;
+              imageContainer.scale.y += 0.005;
             }
-          } else if (orientation == "s") {
-            if(displacementFilter.scale.y < offset*maximum) {
-              displacementFilter.scale.y += offset;
-            }
-          } else if (orientation == "se") {
-            if(displacementFilter.scale.x < offset*maximum
-              || displacementFilter.scale.y > offset*maximum) {
-              displacementFilter.scale.x += offset;
-              displacementFilter.scale.y -= offset;
-            }
-          } else if (orientation == "sw") {
-            if(displacementFilter.scale.x > offset*maximum
-              || displacementFilter.scale.y < offset*maximum) {
-              displacementFilter.scale.x -= offset;
-              displacementFilter.scale.y += offset;
-            }
-          }
-        } else {
-          if (orientation == "w") {
-            if (displacementFilter.scale.x > 0) {
-              displacementFilter.scale.x -= offset;
-            }
-          } else if (orientation == "s") {
-            if (displacementFilter.scale.y > 0) {
-              displacementFilter.scale.y -= offset;
-            }
-          } else if (orientation == "se") {
-            if (displacementFilter.scale.y < 0) {
-              displacementFilter.scale.x -= offset;
-              displacementFilter.scale.y += offset;
-            }
-          } else if (orientation == "sw") {
-            if (displacementFilter.scale.x < 0) {
-              displacementFilter.scale.x += offset;
-              displacementFilter.scale.y -= offset;
+          } else {
+            if(imageContainer.scale.x > 1) {
+              imageContainer.scale.x -= 0.005;
+              imageContainer.scale.y -= 0.005;
             }
           }
         }
