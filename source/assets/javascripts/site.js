@@ -29,8 +29,8 @@ const UNDERSIGHT = {
 
         el.onclick = function(e) {
           e.preventDefault();
-          const loader = Sizzle('.loader')[0];
-          loader.className = "loader out";
+          const loader = Sizzle('body')[0];
+          loader.className += " out";
 
           let href = el.getAttribute('href');
           setTimeout(function() {
@@ -90,7 +90,7 @@ const UNDERSIGHT = {
         );
       });
 
-      const loader = Sizzle('.loader')[0];
+      const loader = Sizzle('body')[0];
 
       setTimeout(function() {
         loader.className += " loaded";
@@ -103,7 +103,7 @@ const UNDERSIGHT = {
     init: function() {
     },
     finalize: function() {
-      const loader = Sizzle('.loader')[0];
+      const loader = Sizzle('body.project')[0];
       const projectContent = Sizzle('.project__wrapper')[0];
       const projectImages = Sizzle('.project__images')[0];
 
@@ -113,10 +113,10 @@ const UNDERSIGHT = {
       setTimeout(function() {
         projectContent.className += " visible";
         loader.className += " loaded";
-      }, 2500);
+      }, 900);
       setTimeout(function() {
         projectImages.className += " visible";
-      }, 3000);
+      }, 1400);
     }
   }
 };

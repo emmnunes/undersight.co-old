@@ -13,6 +13,13 @@ description: 4EveryPet is a pet-sitting and pet-caring business run by a couple 
     </div>
 
     <div class="project__data">
+      <div class="project__data__title">
+        <h2><%= current_page.data.title %></h2>
+        <svg viewBox="0 0 140 100">
+          <use xlink:href="<%= image_path("projects/#{current_page.data.slug}/logo.svg") %>#logo"></use>
+        </svg>
+      </div>
+      
       <div class="project__data__description">
         <p><%= current_page.data.description %></p>
       </div>
@@ -30,6 +37,13 @@ description: 4EveryPet is a pet-sitting and pet-caring business run by a couple 
   </header>
 
   <section class="project__data">
+    <div class="project__data__title">
+      <h2><%= current_page.data.title %></h2>
+      <svg viewBox="0 0 140 100">
+        <use xlink:href="<%= image_path("projects/#{current_page.data.slug}/logo.svg") %>#logo"></use>
+      </svg>
+    </div>
+
     <div class="project__data__description">
       <p><%= current_page.data.description %></p>
     </div>

@@ -19,6 +19,7 @@ var setupThumbnails = {
       let offset = 20;
       let acceleration = 0;
       let maximum = 4 + Math.round(Math.random() * 2);
+      let working = false;
 
       // The application will create a canvas element for you that you
       // can then insert into the DOM.
@@ -117,42 +118,54 @@ var setupThumbnails = {
           if (orientation == "w") {
             if(displacementFilter.scale.x < offset*maximum) {
               displacementFilter.scale.x += offset;
+              working = true;
             }
           } else if (orientation == "s") {
             if(displacementFilter.scale.y < offset*maximum) {
               displacementFilter.scale.y += offset;
+              working = true;
             }
           } else if (orientation == "se") {
             if(displacementFilter.scale.x < offset*maximum
               || displacementFilter.scale.y > offset*maximum) {
               displacementFilter.scale.x += offset;
               displacementFilter.scale.y -= offset;
+              working = true;
             }
           } else if (orientation == "sw") {
             if(displacementFilter.scale.x > offset*maximum
               || displacementFilter.scale.y < offset*maximum) {
               displacementFilter.scale.x -= offset;
               displacementFilter.scale.y += offset;
+              working = true;
             }
           }
-        } else {
+        } else if(working) {
           if (orientation == "w") {
             if (displacementFilter.scale.x > 0) {
               displacementFilter.scale.x -= offset;
+            } else {
+              working = false;
             }
           } else if (orientation == "s") {
             if (displacementFilter.scale.y > 0) {
               displacementFilter.scale.y -= offset;
+            } else {
+              working = false;
             }
           } else if (orientation == "se") {
             if (displacementFilter.scale.y < 0) {
               displacementFilter.scale.x -= offset;
               displacementFilter.scale.y += offset;
+            } else {
+              working = false;
             }
           } else if (orientation == "sw") {
             if (displacementFilter.scale.x < 0) {
               displacementFilter.scale.x += offset;
               displacementFilter.scale.y -= offset;
+            } else {
+              working = false;
             }
           }
         }
