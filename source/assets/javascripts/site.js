@@ -8,149 +8,156 @@
  * Modified by Eduardo Nunes to use vanilla JS, instead of jQuery
  * http://www.undersight.co
  * ======================================================================== */
- //= require sizzle/dist/sizzle.js
+ //= require jquery/dist/jquery.min.js
  //= require pixi.js/dist/pixi.js
+ //= require gsap/src/minified/TweenMax.min.js
  //= require scrollmagic/scrollmagic/minified/ScrollMagic.min.js
+ //= require scrollmagic/scrollmagic/minified/plugins/animation.gsap.min.js
  //= require helpers.js
  //= require thumbnails.js
 
-// Use this variable to set up the common and page specific functions. If you
-// rename this variable, you will also need to rename the namespace below.
-const UNDERSIGHT = {
-  // All pages
-  'common': {
-    init: function() {
+(function($) {
 
-    },
-    finalize: function() {
-      const links = Sizzle('a');
+  // Use this variable to set up the common and page specific functions. If you
+  // rename this variable, you will also need to rename the namespace below.
+  const UNDERSIGHT = {
+    // All pages
+    'common': {
+      init: function() {
+      },
+      finalize: function() {
+        const links = $('a');
 
-      links.forEach(function(el) {
+        $('a').click(function(event) {
+          var href = this.href;
+          event.preventDefault();
+          const loader = $('body');
+          loader.addClass('out');
 
-        el.onclick = function(e) {
-          e.preventDefault();
-          const loader = Sizzle('body')[0];
-          loader.className += " out";
-
-          let href = el.getAttribute('href');
           setTimeout(function() {
             window.location = href;
           }, 400);
-        }
-      });
-
-      setTimeout(function() {
-        var controller = new ScrollMagic.Controller();
-        const scrollables = Sizzle('.scrolling');
-
-        scrollables.forEach(function(el) {
-
-          new ScrollMagic.Scene({
-              triggerElement: el,
-              triggerHook: 0.9
-            })
-            .setClassToggle(el, 'visible')
-          	.addTo(controller); // assign the scene to the controller
         });
-      }, 600);
 
-      return !!window.WebGLRenderingContext &&
-        !!document.createElement('canvas').getContext(
-            'experimental-webgl',
-            {antialias: false});
-    }
-  },
+        setTimeout(function() {
+          var controller = new ScrollMagic.Controller();
 
-  // Home page
-  'index': {
-    init: function() {
+          $('.scrolling').each(function(index) {
+            new ScrollMagic.Scene({
+                triggerElement: this,
+                triggerHook: 0.9
+              })
+              .setTween(this, 0.1, {
+                opacity: 1,
+                y: "0px"
+              })
+            	.addTo(controller); // assign the scene to the controller
+          });
+        }, 600);
 
+        return !!window.WebGLRenderingContext &&
+          !!document.createElement('canvas').getContext(
+              'experimental-webgl',
+              {antialias: false});
+      }
     },
-    finalize: function() {
-      window.onscroll = function() {
-        let scrollPos = document.body.scrollTop;
-        let opacity = scrollPos.map(0, 300, 1.000, 0.015);
-        let transformY = scrollPos.map(0, 300, 0, 50);
-        let rotateX = scrollPos.map(0, 300, 0, 2);
-        let header = Sizzle('.index__header')[0];
 
-        header.style.opacity = opacity;
-        header.style.transform = "translateX(-50%) translateY(-" + transformY + "px) skewX(-" + rotateX + "deg)";
-      };
+    // Home page
+    'index': {
+      init: function() {
 
-      const elements = Sizzle('.project__thumbnail');
-      elements.forEach(function(el) {
-        setupThumbnails.circle.init(
-          el,
-          el.getAttribute('data-type'),
-          el.getAttribute('data-background'),
-          el.getAttribute('data-foreground'),
-          el.getAttribute('data-orientation'),
-          el.getAttribute('data-map')
-        );
+      },
+      finalize: function() {
+
+        window.onscroll = function() {
+          /*
+          let scrollPos = document.body.scrollTop;
+          let opacity = scrollPos.map(0, 200, 1.000, 0.015);
+          let transformY = scrollPos.map(0, 200, 0, 50);
+          let rotateX = scrollPos.map(0, 200, 0, 2);
+          let header = $('.index__header');
+
+          TweenMax.to(header, 0.1, {
+            opacity: opacity,
+            y: -transformY,
+            rotateX: rotateX
+          });
+          */
+        };
+
+        $('.project__thumbnail').each(function(index) {
+          setupThumbnails.circle.init(
+            $(this),
+            $(this).attr('data-type'),
+            $(this).attr('data-background'),
+            $(this).attr('data-foreground'),
+            $(this).attr('data-orientation'),
+            $(this).attr('data-map')
+          );
+        });
+
+        const loader = $('body');
+
+        setTimeout(function() {
+          loader.addClass('loaded');
+        }, 100);
+      }
+    },
+
+    // Project single page
+    'project': {
+      init: function() {
+      },
+      finalize: function() {
+        const loader = $('body.project');
+        const projectContent = $('.project__wrapper');
+        const projectImages = $('.project__images');
+
+        setTimeout(function() {
+          loader.addClass('loading');
+        }, 100);
+        setTimeout(function() {
+          projectContent.addClass("visible");
+          loader.addClass("loaded");
+        }, 900);
+        setTimeout(function() {
+          projectImages.addClass("visible");
+        }, 1400);
+      }
+    }
+  };
+
+  // The routing fires all common scripts, followed by the page specific scripts.
+  // Add additional events for more control over timing e.g. a finalize event
+  const UTIL = {
+    fire: function(func, funcname, args) {
+      var fire;
+      var namespace = UNDERSIGHT;
+      funcname = (funcname === undefined) ? 'init' : funcname;
+      fire = func !== '';
+      fire = fire && namespace[func];
+      fire = fire && typeof namespace[func][funcname] === 'function';
+
+      if (fire) {
+        namespace[func][funcname](args);
+      }
+    },
+    loadEvents: function() {
+      // Fire common init JS
+      UTIL.fire('common');
+
+      // Fire page-specific init JS, and then finalize JS
+      $.each(document.body.className.replace(/-/g, '_').split(/\s+/), function(i, classnm) {
+        UTIL.fire(classnm);
+        UTIL.fire(classnm, 'finalize');
       });
 
-      const loader = Sizzle('body')[0];
-
-      setTimeout(function() {
-        loader.className += " loaded";
-      }, 100);
+      // Fire common finalize JS
+      UTIL.fire('common', 'finalize');
     }
-  },
+  };
 
-  // Project single page
-  'project': {
-    init: function() {
-    },
-    finalize: function() {
-      const loader = Sizzle('body.project')[0];
-      const projectContent = Sizzle('.project__wrapper')[0];
-      const projectImages = Sizzle('.project__images')[0];
+  // Load Events
+  $(document).ready(UTIL.loadEvents);
 
-      setTimeout(function() {
-        loader.className += " loading";
-      }, 100);
-      setTimeout(function() {
-        projectContent.className += " visible";
-        loader.className += " loaded";
-      }, 900);
-      setTimeout(function() {
-        projectImages.className += " visible";
-      }, 1400);
-    }
-  }
-};
-
-// The routing fires all common scripts, followed by the page specific scripts.
-// Add additional events for more control over timing e.g. a finalize event
-const UTIL = {
-  fire: function(func, funcname, args) {
-    var fire;
-    var namespace = UNDERSIGHT;
-    funcname = (funcname === undefined) ? 'init' : funcname;
-    fire = func !== '';
-    fire = fire && namespace[func];
-    fire = fire && typeof namespace[func][funcname] === 'function';
-
-    if (fire) {
-      namespace[func][funcname](args);
-    }
-  },
-  loadEvents: function() {
-    // Fire common init JS
-    UTIL.fire('common');
-
-    // Fire page-specific init JS, and then finalize JS
-    let bodyClasses = document.body.className.replace(/-/g, '_').split(/\s+/);
-    bodyClasses.forEach(function(classnm) {
-      UTIL.fire(classnm);
-      UTIL.fire(classnm, 'finalize');
-    });
-
-    // Fire common finalize JS
-    UTIL.fire('common', 'finalize');
-  }
-};
-
-// Load Events
-docReady(UTIL.loadEvents);
+})(jQuery); // Fully reference jQuery after this point.

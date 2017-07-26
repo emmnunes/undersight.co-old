@@ -71,6 +71,49 @@
     }
 })("docReady", window);
 
+function parallax(args) {
+    "init" == args.action && args.target.each(function() {
+        var $this = $(this);
+        if ($this.data("offsetTop", $this.offset().top), args.factor) var factor = args.factor;
+        else var factor = .04;
+        if (verge.inViewport($this)) {
+            var min = .4,
+                max = 1,
+                normalizedScroll = (max - min) / (_customScroll.limit.y - 1) * (1 - _customScroll.limit.y) + max,
+                aux = Number($this.attr("data-parallax") * $this[0].getBoundingClientRect().top * factor * normalizedScroll);
+            TweenMax.to($this, .5, {
+                y: aux,
+                force3D: !0
+            })
+        }
+    }), "normal" == args.action && args.target.each(function() {
+        var $this = $(this);
+        if (args.factor) var factor = args.factor;
+        else var factor = .04;
+        if (verge.inViewport($this)) {
+            var min = .4,
+                max = 1,
+                normalizedScroll = (max - min) / (args.scroll.limit.y - 0) * (args.scroll.offset.y - args.scroll.limit.y) + max,
+                aux = Number($this.attr("data-parallax") * $this[0].getBoundingClientRect().top * factor * normalizedScroll);
+            TweenMax.to($this, .5, {
+                y: aux,
+                force3D: !0
+            })
+        }
+    }), "reverse" == args.action && args.target.each(function() {
+        var $this = $(this);
+        if (args.factor) var factor = args.factor;
+        else var factor = .04;
+        if (verge.inViewport($this.parent())) {
+            var aux = Number($this.attr("data-parallax") * $this[0].getBoundingClientRect().top * factor);
+            TweenMax.to($this, .1, {
+                y: -aux,
+                force3D: !0
+            })
+        }
+    }), "function" == typeof args.onComplete && args.onComplete()
+}
+
 function findAncestor (el, cls) {
   while ((el = el.parentElement) && !el.classList.contains(cls));
   return el;

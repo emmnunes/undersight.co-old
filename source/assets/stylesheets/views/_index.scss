@@ -1,4 +1,10 @@
 .index {
+  position: relative;
+
+  &__wrapper {
+    position: relative;
+    z-index: 9;
+  }
   .loader {
     position: fixed;
     z-index: 9999;
@@ -28,10 +34,6 @@
     @extend %wrapper;
     padding: 100px 0;
     width: 100%;
-    position: fixed;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%);
 
     &__wrapper {
       @include grid-col(10);
@@ -79,7 +81,6 @@
 
   &__projects {
     position: relative;
-    top: 500px;
     max-width: 90%;
     margin: 50px auto;
 
@@ -105,15 +106,8 @@
       width: 100%;
       position: relative;
       margin-bottom: 30px;
-      opacity: 0;
-      transform: translateY(20px);
       transition: all 0.8s cubic-bezier(1.000, 0.000, 0.000, 1.000), filter 0.4s ease-out;
       filter: grayscale(1);
-
-      &.visible {
-        opacity: 1;
-        transform: translateY(0);
-      }
 
       &__thumbnail {
         opacity: 0;

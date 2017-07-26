@@ -4,8 +4,9 @@ var setupThumbnails = {
   'circle': {
     init: function(image, type, background, foreground, orientation, mapno) {
 
-      const imageWidth = image.offsetWidth;
-      const imageHeight = image.offsetHeight;
+      const imageWidth = image.width();
+      const imageHeight = image.height();
+
       const options = {
         "width": imageWidth,
         "height": imageHeight,
@@ -23,12 +24,12 @@ var setupThumbnails = {
 
       // The application will create a canvas element for you that you
       // can then insert into the DOM.
-      findAncestor(image, 'project').appendChild(canvas.view);
+      image.closest('.project').append(canvas.view);
 
       const base = new PIXI.Container();
       canvas.stage.addChild(base);
 
-      const staticImage = image.getAttribute("src");
+      const staticImage = image.attr("src");
 
       // This creates a texture from a 'bunny.png' image.
       const prjImageBg = new PIXI.Sprite.fromImage(staticImage);
@@ -96,7 +97,7 @@ var setupThumbnails = {
 
       base.addChild(geometry);
 
-      const map = Sizzle('#map-'+mapno)[0].getAttribute("src");
+      const map = $('#map-'+mapno).attr("src");
       const displacementTexture = PIXI.Sprite.fromImage(map);
 
       const displacementFilter = new PIXI.filters.DisplacementFilter(displacementTexture);
@@ -112,9 +113,9 @@ var setupThumbnails = {
       app.push(canvas);
 
       canvas.ticker.add(function(delta) {
-        if (hover) {
-          noiseFilter.seed = Math.random();
+        noiseFilter.seed = Math.random();
 
+        if (hover) {
           if (orientation == "w") {
             if(displacementFilter.scale.x < offset*maximum) {
               displacementFilter.scale.x += offset;
