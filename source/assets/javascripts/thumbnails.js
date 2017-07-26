@@ -4,8 +4,9 @@ var setupThumbnails = {
   'circle': {
     init: function(image, type, background, foreground, orientation, mapno) {
 
-      const imageWidth = image.offsetWidth;
-      const imageHeight = image.offsetHeight;
+      const imageWidth = image.width();
+      const imageHeight = image.height();
+
       const options = {
         "width": imageWidth,
         "height": imageHeight,
@@ -19,10 +20,11 @@ var setupThumbnails = {
       let offset = 20;
       let acceleration = 0;
       let maximum = 4 + Math.round(Math.random() * 2);
+      let working = false;
 
       // The application will create a canvas element for you that you
       // can then insert into the DOM.
-      findAncestor(image, 'project').appendChild(canvas.view);
+      image.closest('.project').append(canvas.view);
 
       const base = new PIXI.Container();
       base.setTransform(imageWidth/2, imageHeight/2, 1, 1, 0, 0, 0, imageWidth/2, imageHeight/2);
@@ -33,7 +35,7 @@ var setupThumbnails = {
       canvas.stage.addChild(base);
       canvas.stage.addChild(imageContainer);
 
-      const staticImage = image.getAttribute("src");
+      const staticImage = image.attr("src");
 
       // This creates a texture from a 'bunny.png' image.
       const prjImage = new PIXI.Sprite.fromImage(staticImage);
@@ -89,8 +91,14 @@ var setupThumbnails = {
 
       base.addChild(geometry);
 
-      const noiseFilter = new PIXI.filters.NoiseFilter(0.09, Math.random());
-      base.filters = [noiseFilter];
+      const map = $('#map-'+mapno).attr("src");
+      const displacementTexture = PIXI.Sprite.fromImage(map);
+
+      const displacementFilter = new PIXI.filters.DisplacementFilter(displacementTexture);
+      const noiseFilter = new PIXI.filters.NoiseFilter(0.05, Math.random());
+      displacementFilter.scale.x = 0;
+      displacementFilter.scale.y = 0;
+      base.filters = [noiseFilter, displacementFilter];
 
       base.addChild(prjImage);
 
@@ -99,18 +107,60 @@ var setupThumbnails = {
       app.push(canvas);
 
       canvas.ticker.add(function(delta) {
-        if(delta > 0) {
-          noiseFilter.seed = Math.random();
+        noiseFilter.seed = Math.random();
 
-          if (hover) {
-            if(imageContainer.scale.x < 1.05) {
-              imageContainer.scale.x += 0.005;
-              imageContainer.scale.y += 0.005;
+        if (hover) {
+          if (orientation == "w") {
+            if(displacementFilter.scale.x < offset*maximum) {
+              displacementFilter.scale.x += offset;
+              working = true;
             }
-          } else {
-            if(imageContainer.scale.x > 1) {
-              imageContainer.scale.x -= 0.005;
-              imageContainer.scale.y -= 0.005;
+          } else if (orientation == "s") {
+            if(displacementFilter.scale.y < offset*maximum) {
+              displacementFilter.scale.y += offset;
+              working = true;
+            }
+          } else if (orientation == "se") {
+            if(displacementFilter.scale.x < offset*maximum
+              || displacementFilter.scale.y > offset*maximum) {
+              displacementFilter.scale.x += offset;
+              displacementFilter.scale.y -= offset;
+              working = true;
+            }
+          } else if (orientation == "sw") {
+            if(displacementFilter.scale.x > offset*maximum
+              || displacementFilter.scale.y < offset*maximum) {
+              displacementFilter.scale.x -= offset;
+              displacementFilter.scale.y += offset;
+              working = true;
+            }
+          }
+        } else if(working) {
+          if (orientation == "w") {
+            if (displacementFilter.scale.x > 0) {
+              displacementFilter.scale.x -= offset;
+            } else {
+              working = false;
+            }
+          } else if (orientation == "s") {
+            if (displacementFilter.scale.y > 0) {
+              displacementFilter.scale.y -= offset;
+            } else {
+              working = false;
+            }
+          } else if (orientation == "se") {
+            if (displacementFilter.scale.y < 0) {
+              displacementFilter.scale.x -= offset;
+              displacementFilter.scale.y += offset;
+            } else {
+              working = false;
+            }
+          } else if (orientation == "sw") {
+            if (displacementFilter.scale.x < 0) {
+              displacementFilter.scale.x += offset;
+              displacementFilter.scale.y -= offset;
+            } else {
+              working = false;
             }
           }
         }

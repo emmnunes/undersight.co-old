@@ -5,21 +5,23 @@ description: 4EveryPet is a pet-sitting and pet-caring business run by a couple 
 ---
 
 <div class="loader" aria-hidden="true" style="background-color: #1c2b3a; color: #b6e7f9; fill: #b6e7f9;">
-  <div class="project__header">
-    <div class="project__header__wrapper">
-      <h1><strong>Undersight</strong>.co</h1>
+  <div class="loader__inner">
+    <div class="project__header">
+      <div class="project__header__wrapper">
+        <h1><strong>Undersight</strong>.co</h1>
+      </div>
     </div>
-  </div>
 
-  <div class="project__data">
-    <div class="project__data__title">
-      <h2><%= current_page.data.title %></h2>
-      <svg viewBox="0 0 140 100">
-        <use xlink:href="<%= image_path("projects/#{current_page.data.slug}/logo.svg") %>#logo"></use>
-      </svg>
-    </div>
-    <div class="project__data__description">
-      <p><%= current_page.data.description %></p>
+    <div class="project__data">
+      <div class="project__data__title">
+        <h2><%= current_page.data.title %></h2>
+        <svg viewBox="0 0 140 100">
+          <use xlink:href="<%= image_path("projects/#{current_page.data.slug}/logo.svg") %>#logo"></use>
+        </svg>
+      </div>
+      <div class="project__data__description">
+        <p><%= current_page.data.description %></p>
+      </div>
     </div>
   </div>
 </div>

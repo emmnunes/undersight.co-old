@@ -7,6 +7,7 @@
     "browser-sync": "~2.11.0",
     "foundation-sites": "^6.3.1",
     "fs": "0.0.2",
+    "gsap": "^1.20.2",
     "gulp": "~3.9.0",
     "gulp-s3": "^0.3.0",
     "gulp-util": "~3.0.5",
@@ -14,7 +15,6 @@
     "normalize-scss": "^7.0.0",
     "pixi.js": "^4.5.3",
     "rsyncwrapper": "~0.4.3",
-    "scrollmagic": "^2.0.5",
-    "sizzle": "^2.3.3"
+    "scrollmagic": "^2.0.5"
   }
 }

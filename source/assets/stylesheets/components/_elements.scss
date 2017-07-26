@@ -1,0 +1,82 @@
+// -----------------------------------------------------------------------------
+// Decorative elements
+// -----------------------------------------------------------------------------
+
+%noise {
+  position: absolute;
+}
+
+.noise-1 {
+  position: fixed;
+  right: 35%;
+  top: -100px;
+  width: 1100px;
+  transform: translateX(100%);
+  z-index: 1;
+}
+.noise-2 {
+  @extend %noise;
+  right: 20%;
+  bottom: 0;
+  width: 466px;
+  z-index: 4;
+  transform: translateY(160px);
+}
+.noise-3 {
+  position: fixed;
+  left: 15%;
+  top: -600px;
+  width: 1100px;
+  transform: scale(-1) rotate(-25deg) translateX(100%);
+  z-index: 2;
+}
+.noise-4 {
+  @extend %noise;
+  left: 2%;
+  top: 60%;
+  width: 844px;
+  transform: translateX(-40%);
+  z-index: 3;
+}
+.noise-5 {
+  @extend %noise;
+  left: 25%;
+  bottom: 0;
+  width: 422px;
+  transform: translate(-50%, 100%) rotate(220deg);
+  z-index: 3;
+}
+
+.blob-1 {
+  position: absolute;
+  left: 0;
+  top: 40%;
+  width: 288px;
+  z-index: 1;
+  transform: translateX(-40%);
+
+  @media #{$xxlarge-up} {
+    left: 50%;
+    top: 50%;
+    transform: translateX(-350%);
+  }
+}
+.blob-2 {
+  position: absolute;
+  right: 50%;
+  top: 1450px;
+  width: 250px;
+  height: 250px;
+  border-radius: 50%;
+  background: $ds-color-brownie;
+  transform: translateX(300%);
+  z-index: 1;
+}
+.blob-3 {
+  position: absolute;
+  left: 60%;
+  top: 1650px;
+  width: 200px;
+  transform: rotate(150deg);
+  z-index: 0;
+}
