@@ -27,16 +27,19 @@ var setupThumbnails = {
       image.closest('.project').append(canvas.view);
 
       const base = new PIXI.Container();
+      base.setTransform(imageWidth/2, imageHeight/2, 1, 1, 0, 0, 0, imageWidth/2, imageHeight/2);
+
+      const imageContainer = new PIXI.Container();
+      imageContainer.setTransform(imageWidth/2, imageHeight/2, 1, 1, 0, 0, 0, imageWidth/2, imageHeight/2);
+
       canvas.stage.addChild(base);
+      canvas.stage.addChild(imageContainer);
 
       const staticImage = image.attr("src");
 
       // This creates a texture from a 'bunny.png' image.
-      const prjImageBg = new PIXI.Sprite.fromImage(staticImage);
       const prjImage = new PIXI.Sprite.fromImage(staticImage);
-      prjImageBg.blendMode = PIXI.BLEND_MODES.MULTIPLY;
       prjImage.blendMode = PIXI.BLEND_MODES.MULTIPLY;
-      prjImage.alpha = 0;
 
       prjImage.interactive = true;
       prjImage.buttonMode = true;
@@ -52,18 +55,9 @@ var setupThumbnails = {
       prjImage.x = canvas.renderer.width / 2;
       prjImage.y = canvas.renderer.height / 2;
 
-      prjImageBg.width = canvas.renderer.width;
-      prjImageBg.height = canvas.renderer.height;
-
-      prjImageBg.x = canvas.renderer.width / 2;
-      prjImageBg.y = canvas.renderer.height / 2;
-
       // Rotate around the center
       prjImage.anchor.x = 0.5;
       prjImage.anchor.y = 0.5;
-
-      prjImageBg.anchor.x = 0.5;
-      prjImageBg.anchor.y = 0.5;
 
       const geometry = new PIXI.Graphics();
 
@@ -108,7 +102,7 @@ var setupThumbnails = {
 
       base.addChild(prjImage);
 
-      canvas.stage.addChild(prjImageBg);
+      imageContainer.addChild(prjImage);
 
       app.push(canvas);
 
